@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include "Transaktion.h"
-
+#include <fstream>
+#include <string>
 
 Transaktion skapaTransaktion() {
 	std::string datum, typ, kategori;
@@ -17,10 +18,25 @@ Transaktion skapaTransaktion() {
 	std::getline(std::cin, kategori);
 
 	std::cout << "Belopp: ";
-	std::getline(std::cin, belopp);
+	std::cin >> belopp;
 	std::cin.ignore(); //rensa nweline kvar i cin
 			   
 	return Transaktion(datum, typ, kategori, belopp);
+}
+
+void sparaTillFil(const std::vector<Transaktion>& transaktioner) {
+	std::ofstream fil("transaktioner.txt"); // oppnar/skapar filen
+if (!fil) { // kolla att filen oppnades korrekt
+	std::cerr << "Kunde inte öppna filen för skrivning!\n";
+	return;
+     }
+
+
+for (auto &t : transaktioner) {
+       fil << t.datum << ";" << t.typ << ";"
+           << t.kategori << ";" << t.belopp << "\n";
+       }       
+
 }
 
 int main(){
@@ -51,6 +67,7 @@ int main(){
 		while (val!= '4');
 
 		std::cout << "Hejdå!\n";
+	sparaTillFil(transaktioner);
 		return 0;
 	
 }
