@@ -3,6 +3,7 @@
 #include "Transaktion.h"
 #include <fstream>
 #include <string>
+#include <sstream>
 
 Transaktion skapaTransaktion() {
 	std::string datum, typ, kategori;
@@ -19,7 +20,7 @@ Transaktion skapaTransaktion() {
 
 	std::cout << "Belopp: ";
 	std::cin >> belopp;
-	std::cin.ignore(); //rensa nweline kvar i cin
+	std::cin.ignore(); //rensa newline kvar i cin
 			   
 	return Transaktion(datum, typ, kategori, belopp);
 }
@@ -39,8 +40,32 @@ for (auto &t : transaktioner) {
 
 }
 
+void lasaFranFil (std::vector<Transaktion>& transaktioner);{
+
+	std::ifstream fil("transaktioner.txt");
+
+	if (!fil) {
+	return; // om fil ej finns- gor inget
+	}
+	std::string rad;
+	while (std::getline(fil, rad)) {
+		std::stringstream ss(rad);
+		std::string datum, typ, kategori, beloppStr;
+
+		std::getline(ss, datum, ';');
+		std::getline(ss, typ, ";");
+		std::getline(ss, kategori, ";");
+		std::getline(ss, beloppStr, ";");
+
+		double belopp = std::stod(beloppStr);
+
+		transaktioner.push_back(Transaktion(datum, typ, kategori, belopp);)
+	}
+}
+
 int main(){
 	std::vector<Transaktion> transaktioner;
+	lasaFranFil(transaktioner);
 	char val;
 
 	do {
