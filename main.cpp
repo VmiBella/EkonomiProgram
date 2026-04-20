@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
 #include "Transaktion.h"
-#include <fstream>
-#include <string>
-#include <sstream>
+
+
+std::string hamtaManad(const std::string& datum) {
+	return datum.substr(0, 7);
+
+}
 
 Transaktion skapaTransaktion() {
 	std::string datum, typ, kategori;
@@ -20,52 +23,13 @@ Transaktion skapaTransaktion() {
 
 	std::cout << "Belopp: ";
 	std::cin >> belopp;
-	std::cin.ignore(); //rensa newline kvar i cin
+	std::cin.ignore(); //rensa nweline kvar i cin
 			   
 	return Transaktion(datum, typ, kategori, belopp);
 }
 
-void sparaTillFil(const std::vector<Transaktion>& transaktioner) {
-	std::ofstream fil("transaktioner.txt"); // oppnar/skapar filen
-if (!fil) { // kolla att filen oppnades korrekt
-	std::cerr << "Kunde inte öppna filen för skrivning!\n";
-	return;
-     }
-
-
-for (auto &t : transaktioner) {
-       fil << t.datum << ";" << t.typ << ";"
-           << t.kategori << ";" << t.belopp << "\n";
-       }       
-
-}
-
-void lasaFranFil (std::vector<Transaktion>& transaktioner);{
-
-	std::ifstream fil("transaktioner.txt");
-
-	if (!fil) {
-	return; // om fil ej finns- gor inget
-	}
-	std::string rad;
-	while (std::getline(fil, rad)) {
-		std::stringstream ss(rad);
-		std::string datum, typ, kategori, beloppStr;
-
-		std::getline(ss, datum, ';');
-		std::getline(ss, typ, ";");
-		std::getline(ss, kategori, ";");
-		std::getline(ss, beloppStr, ";");
-
-		double belopp = std::stod(beloppStr);
-
-		transaktioner.push_back(Transaktion(datum, typ, kategori, belopp);)
-	}
-}
-
 int main(){
 	std::vector<Transaktion> transaktioner;
-	lasaFranFil(transaktioner);
 	char val;
 
 	do {
@@ -92,8 +56,20 @@ int main(){
 		while (val!= '4');
 
 		std::cout << "Hejdå!\n";
-	sparaTillFil(transaktioner);
 		return 0;
 	
+
+
+	std::cout << "Alla transaktioner:\n";
+	for (auto &t : transaktioner) {
+	t.visa();
+	}
+
+	double saldo = 0;
+	for (auto &t : transaktioner) {
+	saldo += (t.typ == "Inkomst") ? t.belopp : -t.belopp;
+	}
+	std::cout << "\nSaldo: " << saldo << "kr\n";
+
+	return 0;
 }
-	
