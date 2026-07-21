@@ -8,6 +8,28 @@ std::string hamtaManad(const std::string& datum) {
 
 }
 
+void visaManad(const std::vector<Transaktion>& transaktioner, const std::string& manad) {
+	double inkomster = 0;
+	double utgifter = 0;
+
+	for (auto&t : transaktioner){
+	if (hamtaManad(t.datum) == manad) {
+	
+	    if (t.typ == "Inkomst")
+	        inkomster += t.belopp;
+	    else
+	        utgifter += t.belopp;
+	}
+	
+    }
+
+        std::cout << "\nMånad: "  << "\n";
+	std::cout << "Inkomster: " << inkomster << " kr\n";
+	std::cout << "Utgifter: " << " kr\n";
+	std::cout << "Saldo: " << (inkomster - utgifter) << " kr\n";
+
+}
+
 Transaktion skapaTransaktion() {
 	std::string datum, typ, kategori;
 	double belopp;
@@ -28,48 +50,46 @@ Transaktion skapaTransaktion() {
 	return Transaktion(datum, typ, kategori, belopp);
 }
 
-int main(){
-	std::vector<Transaktion> transaktioner;
-	char val;
 
-	do {
-		std::cout << "\n1. Lägg till transaktion\n2. Visa alla transaktioner\n3. Visa saldo\n4. Avsluta\n";
-		std::cout << "Välj ett alternativ: ";
-		std::cin >> val;
-		std::cin.ignore(); //rensa neewline
+    int main() {
+    std::vector<Transaktion> transaktioner;
+    char val;
 
-		if (val == '1') {
-		Transaktion t = skapaTransaktion();
-		transaktioner.push_back(t);
-		}
-		else if (val == '2') {
-			std::cout << "\nAlla transaktioner:\n";
-			for (auto &t : transaktioner) t.visa();
-		}
-		else if (val == '3') {
-			double saldo = 0;
-			for (auto &t : transaktioner)
-				saldo += (t.typ == "Inkomst") ? t.belopp : -t.belopp;
-			std::cout << "\nSaldo: " << saldo << " kr\n";
-		}
-	}
-		while (val!= '4');
+    do {
+        std::cout << "\n1. Lägg till transaktion\n2. Visa alla transaktioner\n3. Visa saldo\n5. Visa månad\n4. Avsluta\n";
+        std::cout << "Välj ett alternativ: ";
+        std::cin >> val;
+        std::cin.ignore();
 
-		std::cout << "Hejdå!\n";
-		return 0;
-	
+        if (val == '1') {
+            Transaktion t = skapaTransaktion();
+            transaktioner.push_back(t);
+        }
+        else if (val == '2') {
+            std::cout << "\nAlla transaktioner:\n";
+            for (auto &t : transaktioner) {
+                t.visa();
+            }
+        }
+        else if (val == '3') {
+            double saldo = 0;
+            for (auto &t : transaktioner) {
+                saldo += (t.typ == "Inkomst") ? t.belopp : -t.belopp;
+            }
+            std::cout << "\nSaldo: " << saldo << " kr\n";
+        }
+        else if (val == '5') {
+            std::string manad;
+            std::cout << "Ange manad (YYYY-MM): ";
+            std::getline(std::cin, manad);
 
+            visaManad(transaktioner, manad);
+        }
 
-	std::cout << "Alla transaktioner:\n";
-	for (auto &t : transaktioner) {
-	t.visa();
-	}
+    } while (val != '4');
 
-	double saldo = 0;
-	for (auto &t : transaktioner) {
-	saldo += (t.typ == "Inkomst") ? t.belopp : -t.belopp;
-	}
-	std::cout << "\nSaldo: " << saldo << "kr\n";
-
-	return 0;
+    std::cout << "Hejdå!\n";
+    return 0;
 }
+
+
