@@ -2,3 +2,4 @@
 *.o
 ekonomi
 build/
+transaktioner.txt

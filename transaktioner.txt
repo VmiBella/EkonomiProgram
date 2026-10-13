@@ -1,2 +1,0 @@
-20260412;inkomst;bensin;200
-20260412;utgift;mat;140
