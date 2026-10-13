@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "Transaktion.h"
-
+#include <fstream>
 
 std::string hamtaManad(const std::string& datum) {
 	return datum.substr(0, 7);
@@ -51,6 +51,17 @@ Transaktion skapaTransaktion() {
 }
 
 
+void sparaTransaktion(const Transaktion& t) {
+	std::ofstream fil("transaktioner.txt", std::ios::app);
+
+	fil << t.datum << ";"
+		<< t.typ << ";"
+		<< t.kategori << ";"
+		<< t.belopp << "\n";
+
+
+}
+
     int main() {
     std::vector<Transaktion> transaktioner;
     char val;
@@ -64,6 +75,7 @@ Transaktion skapaTransaktion() {
         if (val == '1') {
             Transaktion t = skapaTransaktion();
             transaktioner.push_back(t);
+	    sparaTransaktion(t);
         }
         else if (val == '2') {
             std::cout << "\nAlla transaktioner:\n";
