@@ -2,6 +2,7 @@
 #include <vector>
 #include "Transaktion.h"
 #include <fstream>
+#include <sstream>
 
 std::string hamtaManad(const std::string& datum) {
 	return datum.substr(0, 7);
@@ -62,8 +63,37 @@ void sparaTransaktion(const Transaktion& t) {
 
 }
 
+void laddaTransaktioner(std::vector<Transaktion>& transaktioner) {
+	std::ifstream fil("transaktioner.txt");
+	std::string rad;
+
+	while (std::getline(fil, rad)) {
+	    std::stringstream ss(rad);
+
+	    std::string datum;
+	    std::getline(ss, datum, ';');
+
+	    std::string typ;
+	    std::getline(ss, typ, ';');
+
+	    std::string kategori;
+	    std::getline(ss, kategori, ';');
+
+	    std::string beloppText;
+	    std::getline(ss, beloppText, ';');
+	    
+		    double belopp = std::stod(beloppText);
+
+	    Transaktion t(datum, typ, kategori, belopp);
+	    transaktioner.push_back(t);
+        }
+
+}
     int main() {
     std::vector<Transaktion> transaktioner;
+  
+    laddaTransaktioner(transaktioner);
+
     char val;
 
     do {
