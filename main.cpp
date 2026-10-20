@@ -3,6 +3,7 @@
 #include "Transaktion.h"
 #include <fstream>
 #include <sstream>
+#include <limits>
 
 std::string hamtaManad(const std::string& datum) {
 	return datum.substr(0, 7);
@@ -46,7 +47,18 @@ Transaktion skapaTransaktion() {
 
 	std::cout << "Belopp: ";
 	std::cin >> belopp;
-	std::cin.ignore(); //rensa nweline kvar i cin
+	//std::cin.ignore(); //rensa nweline kvar i cin
+	
+	while (std::cin.fail()) {
+	    std::cin.clear();
+	    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	    std::cout << "Felaktigt belopp! Forsok igen: ";
+	    std::cin >> belopp;
+	
+	    }
+
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			   
 	return Transaktion(datum, typ, kategori, belopp);
 }
@@ -81,8 +93,12 @@ void laddaTransaktioner(std::vector<Transaktion>& transaktioner) {
 
 	    std::string beloppText;
 	    std::getline(ss, beloppText, ';');
+
 	    
 		    double belopp = std::stod(beloppText);
+	
+	   
+
 
 	    Transaktion t(datum, typ, kategori, belopp);
 	    transaktioner.push_back(t);
