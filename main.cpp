@@ -42,6 +42,11 @@ Transaktion skapaTransaktion() {
 	std::cout << "Typ (Inkomst/Utgift): ";
 	std::getline(std::cin, typ);
 
+	while (typ != "Inkomst" && typ != "Utgift") {
+	    std::cout << "Felaktig typ! Forsok igen: ";
+	    std::getline(std::cin, typ);
+	}
+
 	std::cout << "Kategori: ";
 	std::getline(std::cin, kategori);
 
