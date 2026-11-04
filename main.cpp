@@ -137,10 +137,19 @@ void laddaTransaktioner(std::vector<Transaktion>& transaktioner) {
         else if (val == '3') {
             double saldo = 0;
             for (auto &t : transaktioner) {
-                saldo += (t.typ == "Inkomst") ? t.belopp : -t.belopp;
+                if (t.typ == "Inkomst"){
+			saldo += t.belopp;
             }
+	    else if (t.typ == "Utgift"){
+	        saldo -= t.belopp;
+	    }
+		else {
+			std::cout << "Felaktig transaktionstyp: " << t.typ << '\n';
+		}
+	    }
             std::cout << "\nSaldo: " << saldo << " kr\n";
-        }
+       
+	}
         else if (val == '5') {
             std::string manad;
             std::cout << "Ange manad (YYYY-MM): ";
